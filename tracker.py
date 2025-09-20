@@ -19,8 +19,11 @@ def get_connection():
 def init_db():
     """Create subscriptions table if it does not exist"""
     # TODO
-    with get_connection() as conn: 
+    # Open a connection to finance.db
+    with get_connection() as conn:  
+        # Create a cursor object to execute SQL commands
         cur = conn.cursor()
+        # Run SQL to create the 'expenses' table if it doesn't already exist
         cur.execute("""
         CREATE TABLE IF NOT EXISTS expenses (
             id INTEGER PRIMARY KEY,
@@ -33,6 +36,8 @@ def init_db():
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
         """)
+
+        # Save changes to the database
         conn.commit()
 
 
