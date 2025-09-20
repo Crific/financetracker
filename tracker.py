@@ -19,6 +19,7 @@ def get_connection():
 def init_db():
     """Create subscriptions table if it does not exist"""
     # TODO
+    
     pass
 
 
@@ -30,6 +31,7 @@ def add_subscription(name, amount, period):
 
 def list_subscriptions():
     """List all subscriptions"""
+    "will use cur"
     # TODO
     pass
 
