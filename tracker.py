@@ -19,8 +19,21 @@ def get_connection():
 def init_db():
     """Create subscriptions table if it does not exist"""
     # TODO
-    
-    pass
+    with get_connection() as conn: 
+        cur = conn.cursor()
+        cur.execute("""
+        CREATE TABLE IF NOT EXISTS expenses (
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL,
+            email TEXT,
+            amount REAL,
+            period TEXT NOT NULL,
+            start DATE,
+            next_payment DATE,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        """)
+        conn.commit()
 
 
 def add_subscription(name, amount, period):
