@@ -59,21 +59,33 @@ def add_purchase(name, amount):
 def add_subscription(name, amount, period):
     """Insert a new subscription into the database"""
     # TODO
+    # 1. add logic for calculating next_payment
+    # importing date from datetime
+    # setting up logic for reoccuring payments through a new script
+
+    from datetime import date
+
+    start_date = date.today()
+    # placeholder - compute next_payment based on period
+    # next_payment = 
+
     with get_connection() as conn:  
         # Create a cursor object to execute SQL commands
         cur = conn.cursor()
-        
+        # general parameters to insert new row 
         cur.execute("""
-            INSERT INTO 
-                
-        );
-        """)
+            INSERT INTO expenses (name, amount, period, start, next_payment)
+            VALUES (?, ?, ?, ?, ?)
+        """, ())        # allows inputs to the row
+                        
+
 
         # Save changes to the database
         conn.commit()
 
 
 def list_subscriptions():
+    
     """List all subscriptions"""
     "will use cur"
     # TODO
