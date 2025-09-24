@@ -40,11 +40,37 @@ def init_db():
         # Save changes to the database
         conn.commit()
 
+def add_purchase(name, amount):
+    """Insert a new subscription into the database"""
+    # TODO
+    with get_connection() as conn:  
+        # Create a cursor object to execute SQL commands
+        cur = conn.cursor()
+        # Makes new row and inserts it into the table 
+        cur.execute("""
+        INSERT INTO expenses (name, amount, period, start, next_payment)
+        VALUES (?, ?, ?, DATE('now'), DATE('now'))
+    """, (name, amount, "one-time")) # tuple for input values
+
+        # Save changes to the database
+        conn.commit()
+
 
 def add_subscription(name, amount, period):
     """Insert a new subscription into the database"""
     # TODO
-    pass
+    with get_connection() as conn:  
+        # Create a cursor object to execute SQL commands
+        cur = conn.cursor()
+        
+        cur.execute("""
+            INSERT INTO 
+                
+        );
+        """)
+
+        # Save changes to the database
+        conn.commit()
 
 
 def list_subscriptions():
