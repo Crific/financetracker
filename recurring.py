@@ -11,29 +11,40 @@ Covers:
 - Updating the DB with the right next_payment values
 
 """
+# ----------------------
+# Constants
+# ----------------------
+PERIOD_OPTIONS = ("weekly", "bi-weekly", "monthly", "yearly")
+NON_RECURRING = ("one-time",)
 
 # ----------------------
 # Period utilities
 # ----------------------
-def normalize_period(period: str) -> str:
-    """Make period strings consistent.
+def validate_period(period: str) -> str:
+    """Ensure period is one of the allowed options."""
+    if period not in PERIOD_OPTIONS + NON_RECURRING:
+        # Raise an error if the string is valid Python type (str)
+        # but the *value* is not one of the allowed PERIOD_OPTIONS.
+        # Example: validate_period("random") -> ValueError
 
-    Examples:
-    - "Monthly" -> "monthly"
-    - "mo" -> "monthly"
-    - "1m" -> "monthly"
 
-    TODO: add alias mapping + validation.
-    """
-    pass
+        # Raise an exception instead of silently failing.
+        raise ValueError(f"Invalid period: {period}. Must be one of {PERIOD_OPTIONS + NON_RECURRING}")
+    return period
 
 
 def is_recurring(period: str) -> bool:
     """Return True if the period repeats.
 
-    Tip: "one-time" should be treated as non-recurring.
+    "one-time" should be treated as non-recurring.
     """
-    pass
+    # if in PERIOD_OPTIONS then mark it as true since its recurring
+    if period in PERIOD_OPTIONS:
+        return True
+    elif period in NON_RECURRING: # one-time = non-recurring
+        return False
+    else:
+        raise ValueError(f"Unknown period: {period}") # not an option
 
 
 # ----------------------
