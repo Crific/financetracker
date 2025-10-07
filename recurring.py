@@ -117,7 +117,21 @@ def advance_until_after(current_next_date, period: str, after_date):
     Useful when the app hasn’t run for a while and you want to 
     “catch up” the schedule.
     """
-    pass
+    while current_next_date <= after_date:
+        if period == "daily":
+            current_next_date += relativedelta(days=1)
+        elif period == "weekly":
+            current_next_date += relativedelta(weeks=1)
+        elif period == "bi-weekly":
+            current_next_date += relativedelta(weeks=2)
+        elif period == "monthly":
+            current_next_date += relativedelta(months=1)
+        elif period == "yearly":
+            current_next_date += relativedelta(years=1)
+        else:
+            raise ValueError(f"Unknown period: {period!r}")
+
+    return current_next_date
 
 
 # ----------------------
