@@ -37,3 +37,29 @@ def init_db():
 
         # Save changes to the database
         conn.commit()
+
+# ----------------------
+# Database operations
+# ----------------------
+def update_next_payments(days_ahead: int = 0) -> int:
+    """Bump `next_payment` for anything that’s due or overdue.
+
+    Plan:
+    - Pull rows from `expenses` where next_payment is <= today (+ days_ahead).
+    - Skip one-time entries.
+    - Recalculate next_payment and save back to DB.
+
+    Returns:
+        int: number of rows updated
+    """
+    pass
+
+
+def due_within(days: int):
+    """Get rows due in the next N days.
+
+    Plan:
+    - Query `expenses` for next_payment within the given window.
+    - Probably skip one-time entries that are already past due.
+    """
+    pass
