@@ -1,6 +1,7 @@
 
 from db import get_connection 
-
+from datetime import date
+from dateutil.relativedelta import relativedelta
 
 """
 Helpers for working with recurring expenses.
@@ -14,7 +15,7 @@ Covers:
 # ----------------------
 # Constants
 # ----------------------
-PERIOD_OPTIONS = ("weekly", "bi-weekly", "monthly", "yearly")
+PERIOD_OPTIONS = ("daily", "weekly", "bi-weekly", "monthly", "yearly")
 NON_RECURRING = ("one-time",)
 
 # ----------------------
@@ -59,12 +60,55 @@ def calculate_next_payment(start_date, period: str, from_date=None):
         from_date: what date to calculate from (defaults to today)
 
     Rules:
-    - one-time: return start_date if it hasn’t passed yet, else None
+    - one-time: return None
     - recurring: return the first date after `from_date`
 
     TODO: implement actual math (daily/weekly/monthly/yearly).
     """
-    pass
+    period = validate_period(period) 
+
+    # Handle default from_date
+    if from_date is None:
+        from_date = date.today()
+
+    # One-time payments
+    if period in NON_RECURRING:
+        return None
+
+    # Recurring payments
+    # Start from the first payment date and move forward by period length
+    # until we find a date that comes after from_date
+    #
+    # For example:
+    #   - weekly     → +1 week
+    #   - bi-weekly  → +2 weeks
+    #   - monthly    → +1 month
+    #   - yearly     → +1 year
+
+    if period == "daily":
+        next_payment = start_date + relativedelta(days=1)
+
+    elif period == "weekly":
+        next_payment = start_date + relativedelta(weeks=1)
+
+    elif period == "bi-weekly":
+        next_payment = start_date + relativedelta(weeks=2)
+
+    elif period == "monthly":
+        next_payment = start_date + relativedelta(months=1)
+
+    elif period == "yearly":
+        next_payment = start_date + relativedelta(years=1)
+
+    else:
+        # unknown period would result in an error
+       raise ValueError(f"Unknown period: {period!r}")
+
+    # TODO: ensure next_payment is actually after from_date
+
+    next_payment = advance_until_after(next_payment, period, from_date)
+
+    return next_payment
 
 
 def advance_until_after(current_next_date, period: str, after_date):
